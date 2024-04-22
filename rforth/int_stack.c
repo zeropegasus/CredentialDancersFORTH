@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define MAX_WORDS 100 
 int varCount = 0;
 void int_stack_init(int_stack_t *stk, int capacity) {
     SLIST_INIT(&stk->head);
@@ -375,4 +376,7 @@ int int_stack_get_var(const char* name, int* value) {
     }
     printf("Error: Variable %s not found.\n", name);
     return 0;
+
+
 }
+
