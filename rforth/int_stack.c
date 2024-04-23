@@ -1,8 +1,7 @@
 #include "int_stack.h"
-#include <stdlib.h>
-#include <stdio.h>
 
-#define MAX_WORDS 100 
+
+NamedValue vars[MAX_VARS];
 int varCount = 0;
 void int_stack_init(int_stack_t *stk, int capacity) {
     SLIST_INIT(&stk->head);
