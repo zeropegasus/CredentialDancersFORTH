@@ -117,6 +117,8 @@ void execute_command(const char* command, int_stack_t *stack) {
                 int_stack_logical_or(stack);
             } else if (strcmp(command, "!") == 0) {
                 int_stack_logical_not(stack);
+              else if (strcmp(command, "!") == 0) {
+                int_stack_clear(stack);
             } else {
                 printf("Error: Command '%s' not recognized\n", command);
             }
