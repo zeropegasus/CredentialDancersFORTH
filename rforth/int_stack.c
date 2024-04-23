@@ -209,15 +209,20 @@ void int_stack_print(int_stack_t *stk, FILE *file) {
     int_entry_t *entry;
     int pos = 0;
     if (stk->size == 0) {
-        fprintf(file, "empty stack\n");
+        fprintf(file, "Stack is empty\n");
+    } else {
+        SLIST_FOREACH(entry, &stk->head, entries) {
+            if (pos == 0) {  // Check if the current entry is the top of the stack
+                fprintf(file, "%d: %d <--Top\n", pos, entry->value);
+            } else {
+                fprintf(file, "%d: %d\n", pos, entry->value);
+            }
+            pos++;
+        }
     }
-
-    SLIST_FOREACH(entry, &stk->head, entries) {
-        fprintf(file, "%d: %d\n", pos, entry->value);
-        pos++;
-    }
-    printf("\n");
+    fprintf(file, "\n"); // Print a newline for better formatting after the stack print
 }
+
 
 int int_stack_size(int_stack_t* stk) {
     return stk->size;
