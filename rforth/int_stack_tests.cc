@@ -11,6 +11,24 @@ TEST(IntStackTests, Initialization) {
     ASSERT_EQ(int_stack_size(&stack), 0);
     ASSERT_EQ(int_stack_capacity(&stack), 10);
 }
+TEST(IntStackTests, ClearStack) {
+    int_stack_t stack;
+    int_stack_init(&stack, 10);
+    // Push some elements onto the stack
+    int_stack_push(&stack, 1);
+    int_stack_push(&stack, 2);
+    int_stack_push(&stack, 3);
+
+    // Clear the stack
+    int_stack_clear(&stack);
+
+    // Check if the stack is empty
+    ASSERT_EQ(int_stack_size(&stack), 0);
+
+    
+    int value;
+    ASSERT_FALSE(int_stack_pop(&stack, &value));
+}
 
 TEST(IntStackTests, PushToCapacityAndOverflow) {
     int_stack_t stack;

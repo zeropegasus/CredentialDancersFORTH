@@ -29,7 +29,7 @@ typedef struct {
 
 extern NamedValue vars[MAX_VARS];
 extern int varCount;
-
+extern void int_stack_clear(int_stack_t *stk);
 extern void int_stack_init(int_stack_t *stk, int capacity);
 extern int int_stack_push(int_stack_t *stk, int value);
 extern int int_stack_pop(int_stack_t *stk, int *top_value);

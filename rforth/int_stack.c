@@ -14,6 +14,15 @@ int int_stack_push(int_stack_t *stk, int value) {
         printf("Stack is at full capacity.\n");
         return 0; // fail
     }
+    
+void int_stack_clear(int_stack_t *stk) {
+    int_entry_t *entry;
+    while ((entry = SLIST_FIRST(&stk->head)) != NULL) {
+        SLIST_REMOVE_HEAD(&stk->head, entries);
+        free(entry);
+    }
+    stk->size = 0;  // Reset the size of the stack to 0
+}
 
     int_entry_t *newEntry = malloc(sizeof(int_entry_t));
     if (newEntry) {
