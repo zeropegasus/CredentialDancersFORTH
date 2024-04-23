@@ -1,11 +1,14 @@
 #ifndef INT_STACK_H
 #define INT_STACK_H
-#define MAX_VARS 100
+
 
 #include <stdio.h>
 #include <sys/queue.h>
 #include <string.h>
 #include <stdlib.h>
+
+#define MAX_WORDS 100 
+#define MAX_VARS 100
 
 typedef struct int_entry {
     int value;
@@ -24,7 +27,7 @@ typedef struct {
     int isConstant;
 } NamedValue;
 
-NamedValue vars[MAX_VARS];
+extern NamedValue vars[MAX_VARS];
 extern int varCount;
 
 extern void int_stack_init(int_stack_t *stk, int capacity);
