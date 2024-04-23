@@ -50,93 +50,77 @@ int main() {
     return 0;
 }
 
-void execute_command(const char* input, int_stack_t *stack) {
-    int repeat_count = 1;
-    char command[256]; // Buffer to hold the command after the number
-
-    // Check if the input starts with a digit and parse it
-    if (isdigit(input[0])) {
-        repeat_count = strtol(input, &input, 10); // Parse number and update input pointer
-    }
-
-    // Copy the command part after the number
-    strcpy(command, input);
-
-    while (repeat_count-- > 0) {
-        if (isdigit((unsigned char)command[0])) {
-            int number = atoi(command);
-            int_stack_push(stack, number);
+void execute_command(const char* command, int_stack_t *stack) {
+    if (isdigit((unsigned char)command[0])) {
+        int number = atoi(command);
+        int_stack_push(stack, number);
+    } else {
+        const char* dictionary_command = get_command_from_dictionary(command);
+        if (dictionary_command != NULL) {
+            // Execute the defined word
+            char* token = strtok((char*)dictionary_command, " ");
+            while (token != NULL) {
+                execute_command(token, stack);
+                token = strtok(NULL, " ");
+            }
         } else {
-            const char* dictionary_command = get_command_from_dictionary(command);
-            if (dictionary_command) {
-                // Execute the defined word from the dictionary
-                char buffer[1024];
-                strcpy(buffer, dictionary_command); // Use a buffer to avoid modifying original command
-                char* token = strtok(buffer, " ");
-                while (token) {
-                    execute_command(token, stack);
-                    token = strtok(NULL, " ");
+            if (strcmp(command, "push") == 0) {
+                char* numStr = strtok(NULL, " \t\n");
+                if (numStr) {
+                    int num = atoi(numStr);
+                    int_stack_push(stack, num);
                 }
+            } else if (strcmp(command, "pop") == 0) {
+                int value;
+                if (int_stack_pop(stack, &value)) {
+                    printf("Popped: %d\n", value);
+                }
+            } else if (strcmp(command, "dup") == 0) {
+                int_stack_dup(stack);
+            } else if (strcmp(command, "swap") == 0) {
+                int_stack_swap(stack);
+            } else if (strcmp(command, "over") == 0) {
+                int_stack_over(stack);
+            } else if (strcmp(command, "rot") == 0) {
+                int_stack_rot(stack);
+            } else if (strcmp(command, "drop") == 0) {
+                int_stack_drop(stack);
+            } else if (strcmp(command, "2swap") == 0) {
+                int_stack_2swap(stack);
+            } else if (strcmp(command, "2dup") == 0) {
+                int_stack_2dup(stack);
+            } else if (strcmp(command, "2over") == 0) {
+                int_stack_2over(stack);
+            } else if (strcmp(command, "2drop") == 0) {
+                int_stack_2drop(stack);
+            } else if (strcmp(command, "+") == 0) {
+                int_stack_add(stack);
+            } else if (strcmp(command, "-") == 0) {
+                int_stack_sub(stack);
+            } else if (strcmp(command, "*") == 0) {
+                int_stack_mul(stack);
+            } else if (strcmp(command, "/") == 0) {
+                int_stack_div(stack);
+            } else if (strcmp(command, "%") == 0) {
+                int_stack_mod(stack);
+            } else if (strcmp(command, "divmod") == 0) {
+                int_stack_divmod(stack);
+            } else if (strcmp(command, ">") == 0) {
+                int_stack_greater_than(stack);
+            } else if (strcmp(command, "<") == 0) {
+                int_stack_less_than(stack);
+            } else if (strcmp(command, "=") == 0) {
+                int_stack_equals(stack);
+            } else if (strcmp(command, "&") == 0) {
+                int_stack_logical_and(stack);
+            } else if (strcmp(command, "|") == 0) {
+                int_stack_logical_or(stack);
+            } else if (strcmp(command, "!") == 0) {
+                int_stack_logical_not(stack);
+            }  else if (strcmp(command, "clear") == 0) {
+                int_stack_clear(stack);
             } else {
-                // Execute standard commands
-                if (strcmp(command, "push") == 0) {
-                    char* numStr = strtok(NULL, " \t\n");
-                    if (numStr) {
-                        int num = atoi(numStr);
-                        int_stack_push(stack, num);
-                    }
-                } else if (strcmp(command, "pop") == 0) {
-                    int value;
-                    if (int_stack_pop(stack, &value)) {
-                        printf("Popped: %d\n", value);
-                    }
-                } else if (strcmp(command, "dup") == 0) {
-                    int_stack_dup(stack);
-                } else if (strcmp(command, "swap") == 0) {
-                    int_stack_swap(stack);
-                } else if (strcmp(command, "over") == 0) {
-                    int_stack_over(stack);
-                } else if (strcmp(command, "rot") == 0) {
-                    int_stack_rot(stack);
-                } else if (strcmp(command, "drop") == 0) {
-                    int_stack_drop(stack);
-                } else if (strcmp(command, "2swap") == 0) {
-                    int_stack_2swap(stack);
-                } else if (strcmp(command, "2dup") == 0) {
-                    int_stack_2dup(stack);
-                } else if (strcmp(command, "2over") == 0) {
-                    int_stack_2over(stack);
-                } else if (strcmp(command, "2drop") == 0) {
-                    int_stack_2drop(stack);
-                } else if (strcmp(command, "+") == 0) {
-                    int_stack_add(stack);
-                } else if (strcmp(command, "-") == 0) {
-                    int_stack_sub(stack);
-                } else if (strcmp(command, "*") == 0) {
-                    int_stack_mul(stack);
-                } else if (strcmp(command, "/") == 0) {
-                    int_stack_div(stack);
-                } else if (strcmp(command, "%") == 0) {
-                    int_stack_mod(stack);
-                } else if (strcmp(command, "divmod") == 0) {
-                    int_stack_divmod(stack);
-                } else if (strcmp(command, ">") == 0) {
-                    int_stack_greater_than(stack);
-                } else if (strcmp(command, "<") == 0) {
-                    int_stack_less_than(stack);
-                } else if (strcmp(command, "=") == 0) {
-                    int_stack_equals(stack);
-                } else if (strcmp(command, "&") == 0) {
-                    int_stack_logical_and(stack);
-                } else if (strcmp(command, "|") == 0) {
-                    int_stack_logical_or(stack);
-                } else if (strcmp(command, "!") == 0) {
-                    int_stack_logical_not(stack);
-                } else if (strcmp(command, "clear") == 0) {
-                    int_stack_clear(stack);
-                } else {
-                    printf("Error: Command '%s' not recognized\n", command);
-                }
+                printf("Error: Command '%s' not recognized\n", command);
             }
         }
     }
