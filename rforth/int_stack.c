@@ -187,12 +187,18 @@ int int_stack_2over(int_stack_t *stk) {
 
 
 int int_stack_2drop(int_stack_t *stk) {
-    if (stk->size < 2)
-        return 0;
-    int d1, d2;
-    int_stack_pop(stk, &d1);
-    return int_stack_pop(stk, &d2);
+    if (stk->size < 2) {
+        // Check if the stack has at least two elements to drop
+        return 0; // Return 0 if there are not enough elements to drop two
+    }
+
+    int top_value;
+    int_stack_pop(stk, &top_value); // Drop the first top value
+    int_stack_pop(stk, &top_value); // Drop the second top value
+
+    return 1; // Return 1 to indicate success
 }
+
 
 
 
