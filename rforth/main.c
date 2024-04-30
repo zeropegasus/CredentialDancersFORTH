@@ -89,28 +89,41 @@ int main() {
    return 0;
 }
 
+
+
 void execute_command(const char* command, int_stack_t *stack) {
     int times = 1;
-    char actual_command[256]; // Assuming commands won't exceed this length
-    strcpy(actual_command, command);
-    // Check if the command starts with a number and parse it
-    if (isdigit(command[0])) {
-        sscanf(command, "%d%s", &times, actual_command); // Extract number and command
-    } 
+    char actual_command[256];  // Buffer to hold the command
+
+    // First, check if the command is one of the special two-number commands
+    if (strncmp(command, "2swap", 5) == 0 || strncmp(command, "2dup", 4) == 0 ||
+        strncmp(command, "2over", 5) == 0 || strncmp(command, "2drop", 5) == 0) {
+        strcpy(actual_command, command);
+    } else if (isdigit(command[0])) {
+        // If not, check if the command starts with a number and parse it
+        if (sscanf(command, "%d%s", &times, actual_command) != 2) {
+            printf("Error: Invalid command format '%s'\n", command);
+            return;
+        }
+    } else {
+        strcpy(actual_command, command);
+    }
+
+    // Execute the command the specified number of times
     for (int i = 0; i < times; i++) {
-        // Now execute the actual command
         if (strcmp(actual_command, "push") == 0) {
             char* numStr = strtok(NULL, " \t\n");
             if (numStr) {
                 int num = atoi(numStr);
                 int_stack_push(stack, num);
-        }
-            // Further parsing would be needed to handle 'push' with arguments
+            } else {
+                printf("Error: 'push' command needs a number\n");
+            }
         } else if (strcmp(actual_command, "pop") == 0) {
             int value;
             if (int_stack_pop(stack, &value)) {
                 printf("Popped: %d\n", value);
-        } // Assuming you handle popped value inside the function
+            }
         } else if (strcmp(actual_command, "dup") == 0) {
             int_stack_dup(stack);
         } else if (strcmp(actual_command, "swap") == 0) {
@@ -131,37 +144,40 @@ void execute_command(const char* command, int_stack_t *stack) {
             int_stack_2over(stack);
         } else if (strcmp(actual_command, "2drop") == 0) {
             int_stack_2drop(stack);
-        } else if (strcmp(command, "clear") == 0) {
+        } else if (strcmp(actual_command, "clear") == 0) {
             int_stack_clear(stack);
-        } else if (strcmp(command, "+") == 0) {
+        } else if (strcmp(actual_command, "+") == 0) {
             int_stack_add(stack);
-        } else if (strcmp(command, "-") == 0) {
+        } else if (strcmp(actual_command, "-") == 0) {
             int_stack_sub(stack);
-        } else if (strcmp(command, "*") == 0) {
+        } else if (strcmp(actual_command, "*") == 0) {
             int_stack_mul(stack);
-        } else if (strcmp(command, "/") == 0) {
+        } else if (strcmp(actual_command, "/") == 0) {
             int_stack_div(stack);
-        } else if (strcmp(command, "%") == 0) {
+        } else if (strcmp(actual_command, "%") == 0) {
             int_stack_mod(stack);
-        } else if (strcmp(command, "divmod") == 0) {
+        } else if (strcmp(actual_command, "divmod") == 0) {
             int_stack_divmod(stack);
-        } else if (strcmp(command, ">") == 0) {
+        } else if (strcmp(actual_command, ">") == 0) {
             int_stack_greater_than(stack);
-        } else if (strcmp(command, "<") == 0) {
+        } else if (strcmp(actual_command, "<") == 0) {
             int_stack_less_than(stack);
-        } else if (strcmp(command, "=") == 0) {
+        } else if (strcmp(actual_command, "=") == 0) {
             int_stack_equals(stack);
-        } else if (strcmp(command, "&") == 0) {
+        } else if (strcmp(actual_command, "&") == 0) {
             int_stack_logical_and(stack);
-        } else if (strcmp(command, "|") == 0) {
+        } else if (strcmp(actual_command, "|") == 0) {
             int_stack_logical_or(stack);
-        } else if (strcmp(command, "!") == 0) {
+        } else if (strcmp(actual_command, "!") == 0) {
             int_stack_logical_not(stack);
         } else {
             printf("Error: Command '%s' not recognized\n", actual_command);
         }
     }
 }
+
+
+
 //comment out everything above and uncomment everything below to use the repl system for custom user-defined commands
 /*#include "int_stack.h"
 #include "token.h"
