@@ -199,7 +199,7 @@ int main() {
     }
 }*/
 
-void execute_command(const char* command, int_stack_t *stack) {
+/*void execute_command(const char* command, int_stack_t *stack) {
     if (strcmp(command, "push") == 0) {
         char* numStr = strtok(NULL, " \t\n");
         if (numStr) {
@@ -258,7 +258,80 @@ void execute_command(const char* command, int_stack_t *stack) {
     } else {
         printf("Error: Command '%s' not recognized\n", command);
     }
+}*/
+void execute_command(const char* command, int_stack_t *stack) {
+    int times = 1;
+    char actual_command[256]; // Assuming commands won't exceed this length
+    strcpy(actual_command, command);
+    // Check if the command starts with a number and parse it
+    if (isdigit(command[0])) {
+        sscanf(command, "%d%s", &times, actual_command); // Extract number and command
+    } 
+
+    for (int i = 0; i < times; i++) {
+        // Now execute the actual command
+        if (strcmp(actual_command, "push") == 0) {
+            char* numStr = strtok(NULL, " \t\n");
+            if (numStr) {
+                int num = atoi(numStr);
+                int_stack_push(stack, num);
+        }
+            // Further parsing would be needed to handle 'push' with arguments
+        } else if (strcmp(actual_command, "pop") == 0) {
+            int value;
+            if (int_stack_pop(stack, &value)) {
+                printf("Popped: %d\n", value);
+        } // Assuming you handle popped value inside the function
+        } else if (strcmp(actual_command, "dup") == 0) {
+            int_stack_dup(stack);
+        } else if (strcmp(actual_command, "swap") == 0) {
+            int_stack_swap(stack);
+        } else if (strcmp(actual_command, "over") == 0) {
+            int_stack_over(stack);
+        } else if (strcmp(actual_command, "rot") == 0) {
+            int_stack_rot(stack);
+        } else if (strcmp(actual_command, "drop") == 0) {
+            int_stack_drop(stack);
+        } else if (strcmp(actual_command, "2swap") == 0) {
+            int_stack_2swap(stack);
+        } else if (strcmp(actual_command, "2dup") == 0) {
+            int_stack_2dup(stack);
+        } else if (strcmp(actual_command, "2over") == 0) {
+            int_stack_2over(stack);
+        } else if (strcmp(actual_command, "2drop") == 0) {
+            int_stack_2drop(stack);
+        } else if (strcmp(command, "clear") == 0) {
+            int_stack_clear(stack);
+        } else if (strcmp(command, "+") == 0) {
+            int_stack_add(stack);
+        } else if (strcmp(command, "-") == 0) {
+            int_stack_sub(stack);
+        } else if (strcmp(command, "*") == 0) {
+            int_stack_mul(stack);
+        } else if (strcmp(command, "/") == 0) {
+            int_stack_div(stack);
+        } else if (strcmp(command, "%") == 0) {
+            int_stack_mod(stack);
+        } else if (strcmp(command, "divmod") == 0) {
+            int_stack_divmod(stack);
+        } else if (strcmp(command, ">") == 0) {
+            int_stack_greater_than(stack);
+        } else if (strcmp(command, "<") == 0) {
+            int_stack_less_than(stack);
+        } else if (strcmp(command, "=") == 0) {
+            int_stack_equals(stack);
+        } else if (strcmp(command, "&") == 0) {
+            int_stack_logical_and(stack);
+        } else if (strcmp(command, "|") == 0) {
+            int_stack_logical_or(stack);
+        } else if (strcmp(command, "!") == 0) {
+            int_stack_logical_not(stack);
+        } else {
+            printf("Error: Command '%s' not recognized\n", actual_command);
+        }
+    }
 }
+
 /*void add_word_to_dictionary(const char* word, const char* command) {
     if (dictionary_count < DICTIONARY_SIZE) {
         dictionary_words[dictionary_count] = strdup(word);
