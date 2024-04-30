@@ -229,6 +229,8 @@ void execute_command(const char* command, int_stack_t *stack) {
         int_stack_2over(stack);
     } else if (strcmp(command, "2drop") == 0) {
         int_stack_2drop(stack);
+    } else if (strcmp(command, "clear") == 0) {
+        int_stack_clear(stack);
     } else if (strcmp(command, "+") == 0) {
         int_stack_add(stack);
     } else if (strcmp(command, "-") == 0) {
