@@ -211,7 +211,7 @@ int int_stack_add(int_stack_t *stk) {
     return int_stack_push(stk, top_value + next_to_top_value);
 }
 
-void int_stack_print(int_stack_t *stk, FILE *file) {
+/*void int_stack_print(int_stack_t *stk, FILE *file) {
     int_entry_t *entry;
     int pos = 0;
     if (stk->size == 0) {
@@ -227,7 +227,40 @@ void int_stack_print(int_stack_t *stk, FILE *file) {
         }
     }
     fprintf(file, "\n"); // Print a newline for better formatting after the stack print
+} */
+void int_stack_print(int_stack_t *stk, FILE *file) {
+    int_entry_t *entry;
+    int pos = 0;  // Index to keep track of current position in the list
+
+    // Determine the total entries to correctly label positions from the bottom (0)
+    int totalEntries = stk->size;
+    int stackIndex = 0;  // This will start from the top and count upwards
+
+    if (stk->size == 0) {
+        fprintf(file, "+---------+---------+\n");
+        fprintf(file, "|  Stack  |  Empty  |\n");
+        fprintf(file, "+---------+---------+\n");
+    } else {
+        fprintf(file, "+---------+---------+\n");
+        fprintf(file, "|   Pos   |  Value  |\n");
+        fprintf(file, "+---------+---------+\n");
+        SLIST_FOREACH(entry, &stk->head, entries) {
+            pos = totalEntries - stackIndex - 1; // Correctly calculate position from the bottom
+            if (stackIndex == 0) { // Correctly check if the current entry is the top of the stack
+                fprintf(file, "|  %3d:   | %7d |<--Top \n", pos, entry->value);
+            } else {
+                fprintf(file, "|  %3d:   | %7d |\n", pos, entry->value);
+            }
+            stackIndex++; // Increment to move to the next element in the list
+        }
+        fprintf(file, "+---------+---------+\n"); // Closing border after the stack print
+    }
+    fprintf(file, "\n"); // Print a newline for better formatting after the stack print
 }
+
+
+
+
 
 
 int int_stack_size(int_stack_t* stk) {
