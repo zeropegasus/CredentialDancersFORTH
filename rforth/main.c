@@ -259,7 +259,7 @@ void execute_command(const char* command, int_stack_t *stack) {
         printf("Error: Command '%s' not recognized\n", command);
     }
 }
-void add_word_to_dictionary(const char* word, const char* command) {
+/*void add_word_to_dictionary(const char* word, const char* command) {
     if (dictionary_count < DICTIONARY_SIZE) {
         dictionary_words[dictionary_count] = strdup(word);
         dictionary_commands[dictionary_count] = strdup(command);
@@ -276,4 +276,4 @@ const char* get_command_from_dictionary(const char* word) {
         }
     }
     return NULL;
-}
+} */

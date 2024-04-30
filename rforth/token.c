@@ -62,7 +62,7 @@ token_t* classify_and_create_token(const char* text) {
         if (strcmp(text, "pop") == 0 || strcmp(text, "swap") == 0 || strcmp(text, "dup") == 0 || 
             strcmp(text, "over") == 0 || strcmp(text, "rot") == 0 || strcmp(text, "drop") == 0 || 
             strcmp(text, "2swap") == 0 || strcmp(text, "2dup") == 0 || strcmp(text, "2over") == 0 || 
-            strcmp(text, "2drop") == 0 || strcmp(text, "clear") == 0 || strcmp(text, "set") == 0 || strcmp(text, "get") == 0) {
+            strcmp(text, "2drop") == 0 || strcmp(text, "clear") == 0 || strcmp(text, "set") == 0 || strcmp(text, "get") == 0 || strcmp(text, "divmod") == 0) {
             return new_token(COMMAND, text);  
         } else {
             return new_token(VARIABLE, text);
