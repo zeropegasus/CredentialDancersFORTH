@@ -257,6 +257,43 @@ void int_stack_print(int_stack_t *stk, FILE *file) {
     }
     fprintf(file, "\n"); // Print a newline for better formatting after the stack print
 }
+void int_stack_man(void) {
+    printf("Commands:\n");
+    printf("pop      - Pop top value of stack and return its value\n");
+    printf("dup      - Duplicate top value of stack\n");
+    printf("swap     - Swap top two elements of the stack\n");
+    printf("over     - Duplicate second to top element in stack to the top of the stack\n");
+    printf("rot      - Rotates values in the stack\n");
+    printf("drop     - Drop top value of stack\n");
+    printf("2swap    - Swap the top two pairs of elements\n");
+    printf("2dup     - Duplicate the top two elements of the stack\n");
+    printf("2over    - Duplicate the second pair of elements to the top of the stack\n");
+    printf("2drop    - Drop the top two elements of the stack\n");
+    printf("clear    - Clear the entire stack\n");
+    printf("set      - Initializes variable and sets its value\n");
+    printf("get      - Gets variable value and adds it to top of stack. Example usage: get x\n");
+    printf("# + command - Append number to command to run it that many times. Example: 5drop\n");
+    printf("define   - Defines a user command. Example: define add2 2 +\n\n");
+
+    printf("Operators:\n");
+    printf("+        - Adds top two values of stack\n");
+    printf("-        - Subtracts top two values of stack\n");
+    printf("*        - Multiplies top two values of stack\n");
+    printf("/        - Divides top two values of stack\n");
+    printf("%        - Finds remainder of top two values of stack (modulus operator)\n");
+    printf("divmod   - Takes two numbers as arguments and returns their quotient and remainder\n\n");
+
+    printf("Boolean:\n");
+    printf(">        - Greater than. Example: 5 10 >\n");
+    printf("<        - Less than. Example: 5 10 <\n");
+    printf("=        - Equal to. Example: 10 10 =\n");
+    printf("&        - And operator. Example: 1 1 &\n");
+    printf("|        - Or operator. Example: 1 0 |\n");
+    printf("!        - Negates a statement. Example: ! (1 > 0) returns 0\n\n");
+}
+
+// Add this function to your int_stack.c and call it from your main program
+// or wherever appropriate when you need to display the help text.
 
 
 

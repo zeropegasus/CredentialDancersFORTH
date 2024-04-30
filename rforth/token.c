@@ -62,7 +62,7 @@ token_t* classify_and_create_token(const char* text) {
         if (strcmp(text, "push") == 0 ||strcmp(text, "pop") == 0 || strcmp(text, "swap") == 0 || strcmp(text, "dup") == 0 || 
             strcmp(text, "over") == 0 || strcmp(text, "rot") == 0 || strcmp(text, "drop") == 0 || 
             strcmp(text, "2swap") == 0 || strcmp(text, "2dup") == 0 || strcmp(text, "2over") == 0 || 
-            strcmp(text, "2drop") == 0 || strcmp(text, "clear") == 0 || strcmp(text, "set") == 0 || strcmp(text, "get") == 0 || strcmp(text, "divmod") == 0) {
+            strcmp(text, "2drop") == 0 || strcmp(text, "clear") == 0 || strcmp(text, "set") == 0 || strcmp(text, "get") == 0 || strcmp(text, "divmod") == 0 || strcmp(text, "man") == 0) {
             return new_token(COMMAND, text);  
         } else {
             return new_token(VARIABLE, text);
@@ -102,6 +102,8 @@ void process_token(token_t* token, int_stack_t* stack) {
                 if (int_stack_get_var(varName, &value)) {
                     printf("%s = %d\n", varName, value);
                 }
+            } else if (strcmp(token->text, "man") == 0) {
+                int_stack_man();
             }
             break;
         case BOOLEAN: // Use the correct token type as per your naming convention

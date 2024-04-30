@@ -60,4 +60,5 @@ extern void int_stack_equals(int_stack_t* stk);
 extern void int_stack_logical_and(int_stack_t *stk);
 extern void int_stack_logical_or(int_stack_t *stk);
 extern void int_stack_logical_not(int_stack_t *stk);
+extern void int_stack_man(void); 
 #endif // INT_STACK_H

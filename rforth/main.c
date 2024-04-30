@@ -115,6 +115,8 @@ void execute_command(const char* command, int_stack_t *stack) {
             int_stack_dup(stack);
         } else if (strcmp(actual_command, "swap") == 0) {
             int_stack_swap(stack);
+        } else if (strcmp(actual_command, "man") == 0) {
+            int_stack_man();
         } else if (strcmp(actual_command, "over") == 0) {
             int_stack_over(stack);
         } else if (strcmp(actual_command, "rot") == 0) {
