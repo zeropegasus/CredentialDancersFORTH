@@ -3,7 +3,7 @@ README:
 This is a simple R-FORTH interpreter implemented in C.
 ## Usage
 1. Clone the repository:
-2. git clone https://github.com/your_username/r-forth-interpreter.git
+2. git clone https://github.com/zeropegasus/CredentialDancersFORTH
 3. cd R-FORTH
 4. Make
 5. ./build/bin/R-FORTH
