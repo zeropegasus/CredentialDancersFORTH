@@ -280,16 +280,16 @@ void int_stack_man(void) {
     printf("-        - Subtracts top two values of stack\n");
     printf("*        - Multiplies top two values of stack\n");
     printf("/        - Divides top two values of stack\n");
-    printf("%        - Finds remainder of top two values of stack (modulus operator)\n");
+    printf("%%        - Finds remainder of top two values of stack (modulus operator)\n");
     printf("divmod   - Takes two numbers as arguments and returns their quotient and remainder\n\n");
 
     printf("Boolean:\n");
-    printf(">        - Greater than. Example: 5 10 >\n");
-    printf("<        - Less than. Example: 5 10 <\n");
-    printf("=        - Equal to. Example: 10 10 =\n");
-    printf("&        - And operator. Example: 1 1 &\n");
-    printf("|        - Or operator. Example: 1 0 |\n");
-    printf("!        - Negates a statement. Example: ! (1 > 0) returns 0\n\n");
+    printf(">        - Greater than. Example: > or 5 10 >\n");
+    printf("<        - Less than. Example: < or 5 10 <\n");
+    printf("=        - Equal to. Example:= or 10 10 =\n");
+    printf("&        - And operator. Example: &\n");
+    printf("|        - Or operator. Example: |\n");
+    printf("!        - Negates a statement. Example: ! \n\n");
 }
 
 // Add this function to your int_stack.c and call it from your main program
