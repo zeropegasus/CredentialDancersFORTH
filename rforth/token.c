@@ -46,20 +46,27 @@ void print_token(const token_t* token) {
 
 
 token_t* classify_and_create_token(const char* text) {
-    if (isalpha(text[0])) {
+    // First check for a number that might have letters following it, indicating a command
+    if (isdigit(text[0]) || (text[0] == '-' && isdigit(text[1]))) {
+        int i = 1;
+        // Skip all digits to see if any non-digit characters follow
+        while (isdigit(text[i]) || text[i] == '.') i++;
+        // If non-digit characters follow, it's a command, not a simple number
+        if (text[i] != '\0') {
+            return new_token(COMMAND, text);
+        } else {
+            return new_token(NUMBER, text);
+        }
+    } else if (isalpha(text[0])) {
         // Check common stack operations explicitly
         if (strcmp(text, "pop") == 0 || strcmp(text, "swap") == 0 || strcmp(text, "dup") == 0 || 
             strcmp(text, "over") == 0 || strcmp(text, "rot") == 0 || strcmp(text, "drop") == 0 || 
             strcmp(text, "2swap") == 0 || strcmp(text, "2dup") == 0 || strcmp(text, "2over") == 0 || 
-            strcmp(text, "2drop") == 0 || strcmp(text, "clear") == 0) {
-            return new_token(COMMAND, text);  
-        } else if (strcmp(text, "set") == 0 || strcmp(text, "get") == 0) {
+            strcmp(text, "2drop") == 0 || strcmp(text, "clear") == 0 || strcmp(text, "set") == 0 || strcmp(text, "get") == 0) {
             return new_token(COMMAND, text);  
         } else {
             return new_token(VARIABLE, text);
         }
-    } else if (isdigit(text[0]) || (text[0] == '-' && isdigit(text[1]))) {
-        return new_token(NUMBER, text);
     } else if (strchr("+-*/%", text[0]) && strlen(text) == 1) {
         return new_token(OPERATOR, text);
     } else if (strchr(":;", text[0]) && strlen(text) == 1) {
@@ -70,6 +77,7 @@ token_t* classify_and_create_token(const char* text) {
         return new_token(WORD, text);
     }
 }
+
 
 
 
