@@ -266,7 +266,7 @@ void int_stack_man(void) {
     printf("rot      - Rotates values in the stack\n");
     printf("drop     - Drop top value of stack\n");
     printf("2swap    - Swap the top two pairs of elements\n");
-    printf("2dup     - Duplicate the top two pairs elements of the stack\n");
+    printf("2dup     - Duplicate the top two elements of the stack\n");
     printf("2over    - Duplicate the second pair of elements to the top of the stack\n");
     printf("2drop    - Drop the top two elements of the stack\n");
     printf("clear    - Clear the entire stack\n");
