@@ -58,7 +58,7 @@ int main() {
     int_stack_t stack;
     int_stack_init(&stack, 30);  // Initialize the stack with a capacity of 30
 
-    printf("Enter your R-FORTH code (CTRL+D to end):\n");
+    printf("Enter your SN-FORTH code :\n");
 
     while ((read = getline(&line, &len, stdin)) != -1) {
         char* token_text;
