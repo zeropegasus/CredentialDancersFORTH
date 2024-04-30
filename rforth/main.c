@@ -9,6 +9,7 @@
 
 // Function prototypes
 void execute_command(const char* command, int_stack_t *stack);
+
 void add_word_to_dictionary(const char* word, const char* command);
 const char* get_command_from_dictionary(const char* word);
 
@@ -55,7 +56,7 @@ int main() {
     size_t len = 0;
     ssize_t read;
     int_stack_t stack;
-    int_stack_init(&stack, 15);  // Initialize the stack with a capacity of 15
+    int_stack_init(&stack, 30);  // Initialize the stack with a capacity of 30
 
     printf("Enter your R-FORTH code (CTRL+D to end):\n");
 
