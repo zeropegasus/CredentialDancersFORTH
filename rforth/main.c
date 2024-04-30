@@ -1,4 +1,4 @@
-/*#include "int_stack.h"
+#include "int_stack.h"
 #include "token.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,134 +9,86 @@
 void execute_command(const char* command, int_stack_t *stack);
 
 
-/*int main() {
-    char* line = NULL;
-    size_t len = 0;
-    ssize_t read;
-    int_stack_t stack;
-    int_stack_init(&stack, 30);  // Initialize the stack with a capacity of 30
-
-    printf("Enter your SN-FORTH code :\n");
-
-    while ((read = getline(&line, &len, stdin)) != -1) {
-        char* token_text;
-        const char* delim = " \t\n"; // Token delimiters: space, tab, newline
-        token_text = strtok(line, delim);  // This retrieves the first token in the input line.
-
-        while (token_text != NULL) {
-            token_t* token = classify_and_create_token(token_text);
-            print_token(token);  // This will show the token type and text
-void execute_command(const char* command, int_stack_t *stack) {
-    const char* dict_command = get_command_from_dictionary(command);
-    if (dict_command) {
-        // If command is user-defined, parse and execute the associated command sequence
-        char* token = strtok(strdup(dict_command), " "); // Use strdup to create a mutable copy
-        while (token != NULL) {
-            execute_command(token, stack);
-            token = strtok(NULL, " ");
-        }
-    } else {
-        // Execute built-in commands
-        if (strcmp(command, "push") == 0) {
-            char* numStr = strtok(NULL, " ");
-            if (numStr) {
-                int num = atoi(numStr);
-                int_stack_push(stack, num);
-            }
-        } // Include other built-in commands like pop, dup, etc.
-    }
-}
-
-void add_word_to_dictionary(const char* word, const char* command) {
-    if (dictionary_count < DICTIONARY_SIZE) {
-        dictionary_words[dictionary_count] = strdup(word);
-        dictionary_commands[dictionary_count] = strdup(command);
-        dictionary_count++;
-    } else {
-        printf("Dictionary is full.\n");
-    }
-}
-
-const char* get_command_from_dictionary(const char* word) {
-    for (int i = 0; i < dictionary_count; i++) {
-        if (strcmp(dictionary_words[i], word) == 0) {
-            return dictionary_commands[i];
-        }
-    }
-    return NULL;
-}
 
 int main() {
-    int_stack_t stack;
-    int_stack_init(&stack, 30);
-    char line[1024];
+   char* line = NULL;
+   size_t len = 0;
+   ssize_t read;
+   int_stack_t stack;
+   int_stack_init(&stack, 30);  // Initialize the stack with a capacity of 30
 
-    printf("Enter your commands ('end' to quit):\n");
-    while (fgets(line, sizeof(line), stdin) && strncmp(line, "end", 3) != 0) {
-        char* token = strtok(line, " \n");
-        while (token != NULL) {
-            execute_command(token, &stack);
-            token = strtok(NULL, " \n");
-        }
-        int_stack_print(&stack, stdout); // Print the stack state
-    }
-    return 0;
+
+   printf("Enter your SN-FORTH code :\n");
+
+
+   while ((read = getline(&line, &len, stdin)) != -1) {
+       char* token_text;
+       const char* delim = " \t\n"; // Token delimiters: space, tab, newline
+       token_text = strtok(line, delim);  // This retrieves the first token in the input line.
+
+
+       while (token_text != NULL) {
+           token_t* token = classify_and_create_token(token_text);
+           print_token(token);  // This will show the token type and text
+
+
+           if (token->type == COMMAND && (strcmp(token->text, "set") != 0 && strcmp(token->text, "get") != 0)) {
+               // Handle general commands using the execute_command function
+               execute_command(token->text, &stack);
+           } else {
+               switch (token->type) {
+                   case NUMBER: {
+                       int number = atoi(token->text);
+                       int_stack_push(&stack, number);
+                       break;
+                   }
+                   case BOOLEAN:
+                   case OPERATOR:
+                       process_token(token, &stack);
+                       break;
+                   case COMMAND:
+                       if (strcmp(token->text, "set") == 0) {
+                           char* varName = strtok(NULL, delim);
+                           char* varValue = strtok(NULL, delim);
+                           if (varName && varValue) {
+                               int value = atoi(varValue);
+                               int_stack_set_var(varName, value, 0);
+                               printf("Variable %s set to %d\n", varName, value);
+                           } else {
+                               printf("Error: Missing arguments for 'set'\n");
+                           }
+                       } else if (strcmp(token->text, "get") == 0) {
+                           char* varName = strtok(NULL, delim);
+                           if (varName) {
+                               int value;
+                               if (int_stack_get_var(varName, &value)) {
+                                   int_stack_push(&stack, value);  // Push the retrieved value onto the stack
+                                   printf("%s retrieved and pushed to stack: %d\n", varName, value);
+                               } else {
+                                   printf("Error: Variable '%s' not found\n", varName);
+                               }
+                           } else {
+                               printf("Error: Missing variable name for 'get'\n");
+                           }
+                       }
+                       break;
+
+
+                   default:
+                       printf("Unhandled token type: %s\n", token->text);
+                       break;
+               }
+           }
+           token_text = strtok(NULL, delim);  // Move to the next token.
+       }
+       int_stack_print(&stack, stdout); // Print the current state of the stack
+   }
+
+
+   free(line);
+   return 0;
 }
 
-            if (token->type == COMMAND && (strcmp(token->text, "set") != 0 && strcmp(token->text, "get") != 0)) {
-                // Handle general commands using the execute_command function
-                execute_command(token->text, &stack);
-            } else {
-                switch (token->type) {
-                    case NUMBER: {
-                        int number = atoi(token->text);
-                        int_stack_push(&stack, number);
-                        break;
-                    }
-                    case BOOLEAN:
-                    case OPERATOR:
-                        process_token(token, &stack);
-                        break;
-                    case COMMAND:
-                        if (strcmp(token->text, "set") == 0) {
-                            char* varName = strtok(NULL, delim);
-                            char* varValue = strtok(NULL, delim);
-                            if (varName && varValue) {
-                                int value = atoi(varValue);
-                                int_stack_set_var(varName, value, 0);
-                                printf("Variable %s set to %d\n", varName, value);
-                            } else {
-                                printf("Error: Missing arguments for 'set'\n");
-                            }
-                        } else if (strcmp(token->text, "get") == 0) {
-                            char* varName = strtok(NULL, delim);
-                            if (varName) {
-                                int value;
-                                if (int_stack_get_var(varName, &value)) {
-                                    int_stack_push(&stack, value);  // Push the retrieved value onto the stack
-                                    printf("%s retrieved and pushed to stack: %d\n", varName, value);
-                                } else {
-                                    printf("Error: Variable '%s' not found\n", varName);
-                                }
-                            } else {
-                                printf("Error: Missing variable name for 'get'\n");
-                            }
-                        }
-                        break;
-
-                    default:
-                        printf("Unhandled token type: %s\n", token->text);
-                        break;
-                }
-            }
-            token_text = strtok(NULL, delim);  // Move to the next token.
-        }
-        int_stack_print(&stack, stdout); // Print the current state of the stack
-    }
-
-    free(line);
-    return 0;
-}
 void execute_command(const char* command, int_stack_t *stack) {
     int times = 1;
     char actual_command[256]; // Assuming commands won't exceed this length
@@ -207,9 +159,9 @@ void execute_command(const char* command, int_stack_t *stack) {
             printf("Error: Command '%s' not recognized\n", actual_command);
         }
     }
-}*/
+}
 
-#include "int_stack.h"
+/*#include "int_stack.h"
 #include "token.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -329,4 +281,4 @@ int main() {
     }
 
     return 0;
-}
+}*/
