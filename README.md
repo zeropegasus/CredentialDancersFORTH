@@ -36,7 +36,7 @@ drop: Remove the top element from the stack.
 
 2swap: Swap the top two pairs of elements on the stack.
 
-2dup: Duplicate the top two pairs of elements on the stack.
+2dup: Duplicate the top two elements on the stack.
 
 2over: Duplicate the second pair of elements on the stack.
 
