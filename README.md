@@ -7,7 +7,8 @@ This is a simple R-FORTH interpreter implemented in C.
 cd R-FORTH
 Make
 ./build/bin/R-FORTH
-Commands:
+
+## Commands:
 define <word> <commands>: Define a new word with a sequence of commands.
 <number>: Push a number onto the stack.
 +, -, *, /, %: Arithmetic operations.
