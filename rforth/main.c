@@ -247,7 +247,7 @@ void execute_command(const char* command, int_stack_t *stack) {
                 int_stack_swap(stack);
             } else if (strcmp(command, "over") == 0) {
                 int_stack_over(stack);
-            } else if (strcmp(actual_command, "man") == 0) {
+            } else if (strcmp(command, "man") == 0) {
                 int_stack_man();
             } else if (strcmp(command, "rot") == 0) {
                 int_stack_rot(stack);
