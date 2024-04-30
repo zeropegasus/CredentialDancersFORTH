@@ -162,7 +162,7 @@ void execute_command(const char* command, int_stack_t *stack) {
         }
     }
 }
-
+//comment out everything above and uncomment everything below to use the repl system for custom user-defined commands
 /*#include "int_stack.h"
 #include "token.h"
 #include <stdio.h>
